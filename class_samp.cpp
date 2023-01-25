@@ -22,6 +22,8 @@ int main(){
       {{1.0, 2.0, 3.0},
        {2.0, 5.0, 7.0},
        {2.0, 5.0, 7.0}};
+    auto arr2 = arr1 + 5;
+    auto arr3 = arr2 /2;
     
     std::cout << "Person len: " << p1.getLen() << std::endl;
 }
