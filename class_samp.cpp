@@ -21,9 +21,12 @@ int main(){
     Person p1("Person1");
     int a = 0;
     xt::xarray<double> arr1
-        {{1.0, 2.0, 3.0},
-         {2.0, 5.0, 7.0},
-         {2.0, 5.0, 7.0}};
+      {{1.0, 2.0, 3.0},
+       {2.0, 5.0, 7.0},
+       {2.0, 5.0, 7.0}};
+    auto xview1 = xt::view(arr1, 1, xt::all());
+    auto xrow1 = xt::row(arr1, 0);
+    auto trans1 = xt::transpose(arr1);
     auto arr2 = arr1 + 5;
     auto arr3 = arr2 /2;
     auto xview3 = xt::view(arr3, 1, xt::all());
