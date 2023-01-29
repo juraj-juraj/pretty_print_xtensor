@@ -60,11 +60,14 @@ class prettyXarray (printerInterface):
         yield('shape', str(shape))
         yield('data', str(data))
 
-    # def to_string(self):
-    #     shape = fetch_array(self.m_value['m_shape']['m_begin'], self.m_value['m_shape']['m_end'])
-    #     data = fetch_array(self.m_value['m_storage']['p_begin'], self.m_value['m_storage']['p_end'])
-    #     data = data.reshape(shape)
-    #     return f"shape is {shape}, data: {data}"    
+    def to_string(self):
+        shape = fetch_array(self.m_value['m_shape']['m_begin'], self.m_value['m_shape']['m_end'])
+        data = fetch_array(self.m_value['m_storage']['p_begin'], self.m_value['m_storage']['p_end'])
+        data = data.reshape(shape)
+        return f"shape is {shape}, data: {data}"   
+
+    def display_hint(self):
+        return 'string'
 
 class prettyXtensor (printerInterface):
     """Xtensor pretty

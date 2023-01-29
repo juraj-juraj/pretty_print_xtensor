@@ -3,6 +3,7 @@
 #include <xtensor/xarray.hpp>
 #include <xtensor/xview.hpp>
 #include <xtensor/xfixed.hpp>
+#include <string>
 
 class Person{
 public:
@@ -46,5 +47,6 @@ int main(){
     
     xt::xtensor_fixed<double, xt::xshape<3, 2, 4>> xtensfix2 {};
 
+    std::string str1 = "Hello";
     std::cout << "Person len: " << p1.getLen() << std::endl;
 }

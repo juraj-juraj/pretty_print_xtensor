@@ -1,0 +1,24 @@
+warning: File "/media/juraj/DATA/Dokumentos/C/pretty_print/.gdbinit" auto-loading has been declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load".
+To enable execution of this file add
+	add-auto-load-safe-path /media/juraj/DATA/Dokumentos/C/pretty_print/.gdbinit
+line to your configuration file "/home/juraj/.config/gdb/gdbinit".
+To completely disable this security protection add
+	set auto-load safe-path /
+line to your configuration file "/home/juraj/.config/gdb/gdbinit".
+For more information about this security protection see the
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
+	info "(gdb)Auto-loading safe path"
+
+
+nastavit v /etc/gdb/gdbinit
+	* add-auto-load-safe-path ~/.config/gdb/.gdbinit
+	* source ~/.config/gdb/.gdbinit
+tym sa nastavis spustanie skriptu v home adresari
+
+v home adresari vytvorit novu zlozku ak nie je:
+	* mkdir ~/.config/gdb
+	* touch ~/.config/gdb/.gdbinit
+
+v skripte .gdbinit:
+	source ~/.config/gdb/tensor_print.py # cesta k pretty printer skriptu, bude automaticky spusteny pri kazdom spusteni gdb
+
