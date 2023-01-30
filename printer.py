@@ -20,16 +20,16 @@ class printerInterface:
         pass
     
 def c_to_py_type(c_name: str):
-    if(c_name in ['float', 'double', 'long double']):
+    if(c_name in [gdb.TYPE_CODE_FLT, gdb.TYPE_CODE_FLT]):
         return float
-    elif(c_name.startswith('std::complex')):
+    elif(c_name in [gdb.TYPE_CODE_COMPLEX]):
         return complex
-    else:
+    elif(c_name in [gdb.TYPE_CODE_INT]):
         return int
     
 def fetch_array(begin_it: gdb.Value, end_it:gdb.Value) -> np.array:
     n_size = end_it - begin_it
-    d_type = c_to_py_type(str(begin_it.dereference().type)) #get datatype of one value as is in C++
+    d_type = c_to_py_type(begin_it.dereference().type.code) #get datatype of one value as is in C++
     
     return np.fromiter(map(lambda index: int((begin_it+index).dereference()), range(n_size)), dtype=d_type)
 
@@ -59,12 +59,13 @@ class prettyXarray (printerInterface):
         data = data.reshape(shape)
         yield('shape', str(shape))
         yield('data', str(data))
+        yield('test', '[1,2,3]')
 
-    def to_string(self):
-        shape = fetch_array(self.m_value['m_shape']['m_begin'], self.m_value['m_shape']['m_end'])
-        data = fetch_array(self.m_value['m_storage']['p_begin'], self.m_value['m_storage']['p_end'])
-        data = data.reshape(shape)
-        return f"shape is {shape}, data: {data}"   
+    # def to_string(self):
+    #     shape = fetch_array(self.m_value['m_shape']['m_begin'], self.m_value['m_shape']['m_end'])
+    #     data = fetch_array(self.m_value['m_storage']['p_begin'], self.m_value['m_storage']['p_end'])
+    #     data = data.reshape(shape)
+    #     return f"shape is {shape}, data: {data}"   
 
     def display_hint(self):
         return 'string'
