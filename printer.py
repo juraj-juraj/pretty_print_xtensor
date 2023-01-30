@@ -31,7 +31,7 @@ def fetch_array(begin_it: gdb.Value, end_it:gdb.Value) -> np.array:
     n_size = end_it - begin_it
     d_type = c_to_py_type(begin_it.dereference().type.code) #get datatype of one value as is in C++
     
-    return np.fromiter(map(lambda index: int((begin_it+index).dereference()), range(n_size)), dtype=d_type)
+    return np.fromiter(map(lambda index: d_type((begin_it+index).dereference()), range(n_size)), dtype=d_type)
 
 def shape_from_object(in_val : gdb.Value) -> np.array:
     in_val = str(in_val).strip('{}').replace(' ', '').split(',')
@@ -52,20 +52,22 @@ class prettyXarray (printerInterface):
 
     def __init__(self, value: gdb.Value):
         super().__init__(value)
+        self.shape = fetch_array(self.m_value['m_shape']['m_begin'], self.m_value['m_shape']['m_end'])
+        #self.data = fetch_array(self.m_value['m_storage']['p_begin'], self.m_value['m_storage']['p_end']).reshape(self.shape)
+
+    def next_children(self):
+        if(self._it != self.m_value['m_storage']['p_end']):
+            yield(f"{next(self._indices)}", self._it.dereference())
+            self._it += 1
+            self.next_children()
 
     def children(self):
-        shape = fetch_array(self.m_value['m_shape']['m_begin'], self.m_value['m_shape']['m_end'])
-        data = fetch_array(self.m_value['m_storage']['p_begin'], self.m_value['m_storage']['p_end'])
-        data = data.reshape(shape)
-        yield('shape', str(shape))
-        yield('data', str(data))
-        yield('test', '[1,2,3]')
+        self._indices = np.ndindex(self.shape)
+        self._it = self.m_value['m_storage']['p_begin']
+        self.next_children()
 
-    # def to_string(self):
-    #     shape = fetch_array(self.m_value['m_shape']['m_begin'], self.m_value['m_shape']['m_end'])
-    #     data = fetch_array(self.m_value['m_storage']['p_begin'], self.m_value['m_storage']['p_end'])
-    #     data = data.reshape(shape)
-    #     return f"shape is {shape}, data: {data}"   
+    def to_string(self):
+        return f"xarray with shape {self.shape}"   
 
     def display_hint(self):
         return 'string'
