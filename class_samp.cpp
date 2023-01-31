@@ -3,6 +3,7 @@
 #include <xtensor/xarray.hpp>
 #include <xtensor/xview.hpp>
 #include <xtensor/xfixed.hpp>
+#include <xtensor/xlayout.hpp>
 #include <string>
 
 class Person{
@@ -20,7 +21,7 @@ private:
 
 int main(){
     Person p1("Person1");
-    int a = 0;
+    xt::xarray<int> a2 = {};
     xt::xarray<double> arr1
       {{1.0, 2.0, 3.0},
        {2.0, 5.0, 7.0},
@@ -46,6 +47,17 @@ int main(){
          {2.0, 5.0}};
     
     xt::xtensor_fixed<double, xt::xshape<3, 2, 4>> xtensfix2 {};
+    xt::xarray<int> a3 = {{{1, 2, 3, 4}, {6, 7, 8, 9}}};
+
+    xt::xarray<double, xt::layout_type::row_major> ar
+        {{1.0, 2.0, 3.0},
+         {2.0, 5.0, 7.0},
+         {2.0, 5.0, 7.0}};
+    xt::xarray<double, xt::layout_type::dynamic> ac
+        {{1.0, 2.0, 3.0},
+         {2.0, 5.0, 7.0},
+         {2.0, 5.0, 7.0}};
+
 
     std::string str1 = "Hello";
     std::cout << "Person len: " << p1.getLen() << std::endl;

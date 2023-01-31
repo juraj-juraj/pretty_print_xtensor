@@ -53,18 +53,15 @@ class prettyXarray (printerInterface):
     def __init__(self, value: gdb.Value):
         super().__init__(value)
         self.shape = fetch_array(self.m_value['m_shape']['m_begin'], self.m_value['m_shape']['m_end'])
-        #self.data = fetch_array(self.m_value['m_storage']['p_begin'], self.m_value['m_storage']['p_end']).reshape(self.shape)
-
-    def next_children(self):
-        if(self._it != self.m_value['m_storage']['p_end']):
-            yield(f"{next(self._indices)}", self._it.dereference())
-            self._it += 1
-            self.next_children()
 
     def children(self):
-        self._indices = np.ndindex(self.shape)
-        self._it = self.m_value['m_storage']['p_begin']
-        self.next_children()
+        if(self.shape.size == 0):
+            return
+        indices = np.ndindex(tuple(self.shape))
+        it = self.m_value['m_storage']['p_begin']
+        while(it != self.m_value['m_storage']['p_end']):
+            yield(f"{next(indices)}", it.dereference())
+            it += 1
 
     def to_string(self):
         return f"xarray with shape {self.shape}"   
@@ -96,4 +93,4 @@ def xtensor_resolve(val):
         case _:
             return
         
-gdb.pretty_printers.append(xtensor_resolve)
+#gdb.pretty_printers.append(xtensor_resolve)
