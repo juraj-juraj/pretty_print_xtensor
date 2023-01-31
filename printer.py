@@ -57,11 +57,13 @@ class prettyXarray (printerInterface):
     def children(self):
         if(self.shape.size == 0):
             return
-        indices = np.ndindex(tuple(self.shape))
+        order = "F" if str(self.m_value['m_layout']) == "xt::layout_type::column_major" else "C" # F like fortran style, for collumn major
+        indices = np.nditer(np.zeros(tuple(self.shape)), flags=['multi_index'], order=order)
         it = self.m_value['m_storage']['p_begin']
         while(it != self.m_value['m_storage']['p_end']):
-            yield(f"{next(indices)}", it.dereference())
+            yield(f"{indices.multi_index}", it.dereference())
             it += 1
+            indices.iternext()
 
     def to_string(self):
         return f"xarray with shape {self.shape}"   
@@ -93,4 +95,4 @@ def xtensor_resolve(val):
         case _:
             return
         
-#gdb.pretty_printers.append(xtensor_resolve)
+gdb.pretty_printers.append(xtensor_resolve)
