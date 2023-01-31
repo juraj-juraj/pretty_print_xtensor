@@ -5,5 +5,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-add_executable(class_samp class_samp.cpp)
-target_link_libraries(class_samp ${CONAN_LIBS})
+add_executable(testing_prg testing_prg.cpp)
+target_link_libraries(testing_prg ${CONAN_LIBS})

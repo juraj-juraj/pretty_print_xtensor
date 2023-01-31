@@ -1,22 +1,12 @@
 #include <iostream>
 #include <string>
-#include <xtensor/xarray.hpp>
+
 #include <xtensor/xfixed.hpp>
 #include <xtensor/xlayout.hpp>
 #include <xtensor/xview.hpp>
-
-class Person {
-public:
-  Person(std::string name) : mName(std::move(name)) {}
-
-  size_t getLen() { return mName.length(); }
-
-private:
-  std::string mName;
-};
+#include <xtensor/xarray.hpp>
 
 int main() {
-  Person p1("Person1");
   xt::xarray<int> a2 = {};
   xt::xarray<double> arr1{{1.0, 2.0, 3.0}, {2.0, 5.0, 7.0}, {2.0, 5.0, 7.0}};
   auto xview1 = xt::view(arr1, 1, xt::all());
@@ -43,7 +33,4 @@ int main() {
       {1.0, 2.0, 3.0}, {2.0, 5.0, 7.0}, {2.0, 5.0, 7.0}};
   xt::xarray<double, xt::layout_type::column_major> ac{
       {1.0, 2.5, 3.0}, {2.0, 5.0, 7.0}, {2.0, 5.0, 7.0}};
-
-  std::string str1 = "Hello";
-  std::cout << "Person len: " << p1.getLen() << std::endl;
 }

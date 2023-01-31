@@ -1,5 +1,5 @@
 .vscode
-build/
+build*/
 *.swp
 *.txt.user
 __pycache__
