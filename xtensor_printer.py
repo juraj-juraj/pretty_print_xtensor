@@ -24,7 +24,7 @@ class printerInterface:
 
 def c_to_py_type(c_name: str):
     match(c_name):
-        case gdb.TYPE_CODE_FLT | gdb.TYPE_CODE_FIXED_POINT:
+        case gdb.TYPE_CODE_FLT:
             return float
         case gdb.TYPE_CODE_COMPLEX:
             return complex
